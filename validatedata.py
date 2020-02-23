@@ -39,19 +39,19 @@ def main():
         # Read in the file with the columns and row accessible 
         csv_reader = csv.DictReader(csv_file, delimiter='\t')
         line_count = 0
-        print(csv_reader.fieldnames)
+        
         for row in csv_reader:
             if line_count == 1:
-                print(f'Column names are {row}')
+                # print(f'Column names are {row}')
                 line_count += 1
             else:
                 # print(f'\t{row[0]}')
                 currentTime = float(row[timeHeaderName])
                 if currentTime >= 2000 and currentTime <= 8000:
-                    pressureDataList.append(row[pressureHeaderName])
-                    print(f'\t Time: {row["Time(ms)"]} Pressure: {row["Pressure(psig)"]}')
+                    pressureDataList.append(float(row[pressureHeaderName]))
+                    # print(f'\t Time: {row["Time(ms)"]} Pressure: {row["Pressure(psig)"]}')
                 line_count += 1
-        print(f'\t Here is the average found {getAvg(pressureDataList)}')
+        print(f'\nHere is the average found {getAvg(pressureDataList)}')
 
 
 main()

@@ -18,7 +18,9 @@ def getAvg(numList):
         traceback.print_exc()
         print('ERROR: There was an issue getting the average')
         return 0
-    
+def checkIfInRange(num, expected, tolerance):
+    # TODO Add range checking
+    return 0     
 def main():
     print('About to try to read in file...')
     # filename = input('What is the file name?')
@@ -51,7 +53,7 @@ def main():
                     pressureDataList.append(float(row[pressureHeaderName]))
                     # print(f'\t Time: {row["Time(ms)"]} Pressure: {row["Pressure(psig)"]}')
                 line_count += 1
-        print(f'\nHere is the average found {getAvg(pressureDataList)}')
+        print(f'\nHere is the average found {round(getAvg(pressureDataList),2)}')
 
 
 main()

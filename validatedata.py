@@ -27,7 +27,8 @@ def checkIfInRange(num, expected, tolerance):
         print('PUMPS PASSES TOLERANCE TEST')
         return 1 
     print('FAIL: PUMP DOES NOT PASS TOLERANCE TEST')
-    return 0     
+    return 0 
+    
 def main():
     print('About to try to read in file...')
     # filename = input('What is the file name?')

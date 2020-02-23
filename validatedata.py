@@ -20,6 +20,13 @@ def getAvg(numList):
         return 0
 def checkIfInRange(num, expected, tolerance):
     # TODO Add range checking
+    # This is the minimum value, for example a tolerance of 0.1 would be expected * 0.9
+    minVal = expected * (1-tolerance)
+    maxVal = expected * (1+tolerance)
+    if num >= minVal and num <=maxVal: 
+        print('PUMPS PASSES TOLERANCE TEST')
+        return 1 
+    print('FAIL: PUMP DOES NOT PASS TOLERANCE TEST')
     return 0     
 def main():
     print('About to try to read in file...')
@@ -53,7 +60,10 @@ def main():
                     pressureDataList.append(float(row[pressureHeaderName]))
                     # print(f'\t Time: {row["Time(ms)"]} Pressure: {row["Pressure(psig)"]}')
                 line_count += 1
+        averageCalculated = round(getAvg(pressureDataList),2)
         print(f'\nHere is the average found {round(getAvg(pressureDataList),2)}')
-
+        toleranceValue = 0.05
+        expectedValue = 120.0 
+        checkIfInRange(averageCalculated, expectedValue, toleranceValue)
 
 main()

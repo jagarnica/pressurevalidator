@@ -13,21 +13,27 @@ def checkFileExists(fn):
 
 def main():
     print('About to try to read in file...')
-    filename = input('What is the file name?')
+    # filename = input('What is the file name?')
+    # This is temporary for debugging 
+    filename = '12_25_35.TXT'
     # Lets see if the file exists first
     if checkFileExists(filename) != 1:
         return
   
     with open(filename) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
+        # first lets read in the file 
+        # This is used to skip the first line because of the headers. 
+        next(csv_file)
+        # Read in the file with the columns and row accessible 
+        csv_reader = csv.DictReader(csv_file, delimiter='\t')
         line_count = 0
+        print(csv_reader.fieldnames)
         for row in csv_reader:
             if line_count == 1:
-                print(f'Column names are {", ".join(row)}')
+                print(f'Column names are {row}')
                 line_count += 1
             else:
-                print(
-                    f'\t{row[0]}')
+                # print(f'\t{row[0]}')
                 line_count += 1
 
 

@@ -29,11 +29,10 @@ def checkIfInRange(num, expected, tolerance):
     print('FAIL: PUMP DOES NOT PASS TOLERANCE TEST')
     return 0 
     
-def main():
+def validateFile(filename, expectedValue, toleranceValue):
     print('About to try to read in file...')
     # filename = input('What is the file name?')
     # This is temporary for debugging 
-    filename = '12_25_35.TXT'
     # Lets see if the file exists first
     if checkFileExists(filename) != 1:
         return
@@ -63,8 +62,7 @@ def main():
                 line_count += 1
         averageCalculated = round(getAvg(pressureDataList),2)
         print(f'\nHere is the average found {round(getAvg(pressureDataList),2)}')
-        toleranceValue = 0.05
-        expectedValue = 120.0 
+        
         checkIfInRange(averageCalculated, expectedValue, toleranceValue)
 
-main()
+

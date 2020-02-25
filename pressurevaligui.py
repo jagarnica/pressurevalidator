@@ -39,12 +39,23 @@ while True:                             # The Event Loop
             filePathSelected = str(default_folder_path)
         expectedVal = round(float(values[EXPECTED_VAL_KEY]),4)
         toleranceVal = round(float(values[TOLERANCE_VAL_KEY]),4)
-        print('Button Clicked!! '+filePathSelected)
+        print('Current Path: '+filePathSelected)
         # Get a list of txt files in the folder selected
+        successfulTotal = 0 
+        failedTotal = 0 
+        failedList = []
+        window[OUTPUT_TEXT_KEY].Update('')
         arr = [x for x in os.listdir(filePathSelected) if x.endswith(
             ".txt") or x.endswith(".TXT")]
         for fileName in arr:
-            datalyze.validateFile(fileName, expectedVal, toleranceVal)
-            print(f'Filename found {fileName}')
-        print('Here are the files here ')
+            print(f'\nFilename: {fileName}')
+            if datalyze.validateFile(fileName, expectedVal, toleranceVal) == 1:
+                successfulTotal+= 1
+            else:
+                failedTotal+= 1 
+                failedList.append(fileName)
+        print(f'\nTests Succeeded: {successfulTotal}')
+        print(f'Tests Failed: {failedTotal}')
+        for failedFile in failedList:
+            print(f'FAILED: {failedFile}')
         window.Refresh()

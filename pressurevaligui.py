@@ -6,24 +6,25 @@ import fastnumbers
 sg.theme('Default1')  
 FILE_PATH_KEY = 'FILE_PATH'
 EXPECTED_VAL_KEY = 'EXPECTED_VAL'
-TOLERANCE_VAL_KEY = 'TOL_VAL'
 OUTPUT_TEXT_KEY = 'OUTPUT_TEXT'
 VALIDATE_BUTTON_KEY = 'VALIDATE_BUTTON'
 EXIT_BUTTON_KEY = 'Exit'
 FOLDER_BROWSE_KEY = 'FOLDER_BROWSE'
 MIN_VOL_VALUE_KEY = 'MINIMUM_VOLUME_VALUE'
 MAX_VOL_VALUE_KEY = 'MAXIMUM_VOLUME_VALUE'
+M_VALUE_KEY = 'M_VALUE'
+B_VALUE_KEY = 'B_VALUE'
 default_folder_path = pathlib.Path().absolute()
-
+def checkIfValuesAreNumbers(valuesToCheck):
+    for value in valuesToCheck:
+        if fastnumbers.isfloat(value)==0:
+            return 0
+    return 1
 layout = [
     [sg.Text('File'), sg.InputText(default_text=default_folder_path, key=FILE_PATH_KEY), sg.FolderBrowse(key=FOLDER_BROWSE_KEY)
      ],
-    [sg.Text('Expected Value'), sg.InputText(size=(12, 48),
-                                             default_text='120.00', key=EXPECTED_VAL_KEY)],
     [sg.Text('Min Volume (ex: 12.2)'), sg.InputText(size=(12,48), key=MIN_VOL_VALUE_KEY),sg.Text('Max Volume'), sg.InputText(size=(12,48),key=MAX_VOL_VALUE_KEY) ],
-    [sg.Text('y ='),sg.InputText(size=(6,48)),sg.Text('x +'),sg.InputText(size=(6,48))],
-    [sg.Text('Tolerance (ex: 0.01 for 1%)'), sg.InputText(
-        size=(12, 48), default_text='0.1', key=TOLERANCE_VAL_KEY)],
+    [sg.Text('y ='),sg.InputText(size=(6,48), key=M_VALUE_KEY),sg.Text('x +'),sg.InputText(size=(6,48), key=B_VALUE_KEY)],
     [sg.Output(size=(88, 20), background_color='#000',
                text_color='#ffffff', key=OUTPUT_TEXT_KEY)],
     [sg.Submit(button_text='Validate', key=VALIDATE_BUTTON_KEY),
@@ -40,8 +41,12 @@ while True:                             # The Event Loop
         filePathSelected = values[FOLDER_BROWSE_KEY]
         if filePathSelected == '':
             filePathSelected = str(default_folder_path)
-        expectedVal = round(float(values[EXPECTED_VAL_KEY]),4)
-        toleranceVal = round(float(values[TOLERANCE_VAL_KEY]),4)
+        
+        minimumVolValue = fastnumbers.fast_float(values[MIN_VOL_VALUE_KEY])
+        maximumVolValue = fastnumbers.fast_float(values[MAX_VOL_VALUE_KEY])
+        mValue = fastnumbers.fast_float(values[M_VALUE_KEY])
+        bValue = fastnumbers.fast_float(values[B_VALUE_KEY])
+        
         print('Current Path: '+filePathSelected)
         # Get a list of txt files in the folder selected
         successfulTotal = 0 
@@ -52,7 +57,7 @@ while True:                             # The Event Loop
             ".txt") or x.endswith(".TXT")]
         for fileName in arr:
             print(f'\nFilename: {fileName}')
-            if datalyze.validateFile(fileName, expectedVal, toleranceVal) == 1:
+            if datalyze.validateFile(fileName, minimumVolValue, maximumVolValue, mValue, bValue) == 1:
                 successfulTotal+= 1
             else:
                 failedTotal+= 1 

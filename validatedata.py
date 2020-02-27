@@ -47,7 +47,7 @@ def getValueFromFunction(mVal, xVal, bVal):
     except:
         print('ERROR: There was an issue calculating the value using the formula. Check values')
         return -1
-def validateFile(filename, expectedValue, toleranceValue):
+def validateFile(filename, minValue, maxValue, mValue, bValue):
     # filename = input('What is the file name?')
     # This is temporary for debugging
     # Lets see if the file exists first
@@ -79,9 +79,10 @@ def validateFile(filename, expectedValue, toleranceValue):
                         # print(f'\t Time: {row["Time(ms)"]} Pressure: {row["Pressure(psig)"]}')
                     line_count += 1
             averageCalculated = round(getAvg(pressureDataList), 2)
+            calculatedYVal = round(getValueFromFunction(mValue, averageCalculated,bValue),4)
             print(f'Average Value: {round(getAvg(pressureDataList),2)}')
-
-            return checkIfInRange(averageCalculated, expectedValue, toleranceValue)
+            print(f'Calculated Value: {calculatedYVal}')
+            return checkIfInMinMax(calculatedYVal, minValue, maxValue)
         except:
             print(f'There was an error reading this file! {filename}')
             return 0

@@ -24,7 +24,6 @@ def getAvg(numList):
 
 
 def checkIfInRange(num, expected, tolerance):
-    # TODO Add range checking
     # This is the minimum value, for example a tolerance of 0.1 would be expected * 0.9
     minVal = expected * (1-tolerance)
     maxVal = expected * (1+tolerance)
@@ -34,7 +33,12 @@ def checkIfInRange(num, expected, tolerance):
     print('FAIL: PUMP DOES NOT PASS TOLERANCE TEST')
     return 0
 
-
+def checkIfInMinMax(numVal, minVal, maxVal):
+    # This is to check if it falls between the min and max. 
+    if numVal >= minVal and numVal <= maxVal:
+        return 1
+    else:
+        return 0
 def validateFile(filename, expectedValue, toleranceValue):
     # filename = input('What is the file name?')
     # This is temporary for debugging

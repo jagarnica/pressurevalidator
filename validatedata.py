@@ -39,6 +39,14 @@ def checkIfInMinMax(numVal, minVal, maxVal):
         return 1
     else:
         return 0
+
+def getValueFromFunction(mVal, xVal, bVal):
+    try:
+        valueCalculated = (mVal * xVal) + bVal
+        return valueCalculated
+    except:
+        print('ERROR: There was an issue calculating the value using the formula. Check values')
+        return -1
 def validateFile(filename, expectedValue, toleranceValue):
     # filename = input('What is the file name?')
     # This is temporary for debugging

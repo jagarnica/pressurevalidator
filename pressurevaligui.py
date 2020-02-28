@@ -20,10 +20,10 @@ B_VALUE_KEY = 'B_VALUE'
 default_folder_path = pathlib.Path().absolute()
 currentConfig = config.loadConfigurationFile()
 loadedValues = currentConfig['DEFAULT']
-mLoadedValue = loadedValues.get('m_value','0')
-bLoadedValue = loadedValues.get('b_value','0')
-minLoadedValue = loadedValues.get('min_volume','0')
-maxLoadedValue = loadedValues.get('max_volume','0')
+mLoadedValue = loadedValues.get('m_value','-0.36')
+bLoadedValue = loadedValues.get('b_value','300')
+minLoadedValue = loadedValues.get('min_volume','300')
+maxLoadedValue = loadedValues.get('max_volume','400')
 
 def filterArrayOfValues(values, names):
     """Retuns an array that match the keys from the values list"""

@@ -42,7 +42,7 @@ def checkIfValuesAreNumbers(values):
 layout = [
     [sg.Text('File'), sg.InputText(default_text=default_folder_path, key=FILE_PATH_KEY), sg.FolderBrowse(key=FOLDER_BROWSE_KEY)
      ],
-    [sg.Text('Min Volume (ex: 12.2)'), sg.InputText(default_text=minLoadedValue,size=(12,48), key=MIN_VOL_VALUE_KEY),sg.Text('Max Volume'), sg.InputText(default_text=maxLoadedValue, size=(12,48),key=MAX_VOL_VALUE_KEY) ],
+    [sg.Text('Min Volume (mL)'), sg.InputText(default_text=minLoadedValue,size=(12,48), key=MIN_VOL_VALUE_KEY),sg.Text('Max Volume (mL)'), sg.InputText(default_text=maxLoadedValue, size=(12,48),key=MAX_VOL_VALUE_KEY) ],
     [sg.Text('y ='),sg.InputText(default_text=mLoadedValue, size=(6,48), key=M_VALUE_KEY),sg.Text('x +'),sg.InputText(default_text=bLoadedValue, size=(6,48), key=B_VALUE_KEY)],
     [sg.Output(size=(88, 20), background_color='#000',
                text_color='#ffffff', key=OUTPUT_TEXT_KEY)],

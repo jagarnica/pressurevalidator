@@ -108,9 +108,9 @@ def validateFile(filename, minValue, maxValue, mValue, bValue):
                     line_count += 1
             averageCalculated = round(getAvg(pressureDataList), 2)
             calculatedYVal = round(getValueFromFunction(mValue, averageCalculated,bValue),4)
-            listOfCurrentDetails = [f'Calculated Volume: {calculatedYVal}',f'Average Calculated: {averageCalculated}',f'Formula Used: y ={mValue}x+{bValue}',f'Min value: {minValue}',f'Max Value: {maxValue}']
-            print(f'Average Value: {round(getAvg(pressureDataList),2)}')
-            print(f'Calculated Value: {calculatedYVal}')
+            listOfCurrentDetails = [f'Calculated Volume: {calculatedYVal} mL',f'Average Pressure: {averageCalculated} psig',f'Formula Used: y ={mValue}x+{bValue}',f'Min value: {minValue} mL',f'Max Value: {maxValue} mL']
+            print(f'Average pressure: {round(getAvg(pressureDataList),2)} psig')
+            print(f'Calculated Volume: {calculatedYVal} mL')
             resultFromTest = checkIfInMinMax(calculatedYVal, minValue, maxValue)
             writeResultFile(resultFromTest, filename, listOfCurrentDetails)
             return resultFromTest

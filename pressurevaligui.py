@@ -17,9 +17,9 @@ MIN_VOL_VALUE_KEY = 'MINIMUM_VOLUME_VALUE'
 MAX_VOL_VALUE_KEY = 'MAXIMUM_VOLUME_VALUE'
 M_VALUE_KEY = 'M_VALUE'
 B_VALUE_KEY = 'B_VALUE'
-default_folder_path = pathlib.Path().absolute()
 currentConfig = config.loadConfigurationFile()
 loadedValues = currentConfig['Default']
+default_folder_path = loadedValues.get('test_folder_path',pathlib.Path().absolute())
 mLoadedValue = loadedValues.get('m_value','-0.36')
 bLoadedValue = loadedValues.get('b_value','300')
 minLoadedValue = loadedValues.get('min_volume','300')
@@ -88,7 +88,8 @@ while True:                             # The Event Loop
                 ".txt") or x.endswith(".TXT")]
             for fileName in arr:
                 print(f'\nFilename: {fileName}')
-                if datalyze.validateFile(fileName, minimumVolValue, maximumVolValue, mValue, bValue) == 1:
+                filePath = filePathSelected+'/'+fileName
+                if datalyze.validateFile(filePath, minimumVolValue, maximumVolValue, mValue, bValue) == 1:
                     successfulTotal+= 1
                 else:
                     failedTotal+= 1 

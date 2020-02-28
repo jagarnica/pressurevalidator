@@ -4,7 +4,7 @@ config = configparser.ConfigParser()
 CONFIG_FILE_NAME = 'config.ini'
 defaultFilePath = pathlib.Path().absolute()
 # These are our default values just in case the file does not exist. 
-config['DEFAULT'] = {'Min_Volume': '300','Max_Volume': '400','M_Value': '-0.36','B_Value':'300','Test_Folder_Path':defaultFilePath}
+config['Default'] = {'Min_Volume': '300','Max_Volume': '400','M_Value': '-0.36','B_Value':'300','Test_Folder_Path':defaultFilePath}
 # this file is in charge of loading the configuration file. 
 def checkFileExists(fn):
     try:

@@ -1,8 +1,11 @@
 import PySimpleGUI as sg
 import os
+import configuration as config 
 import validatedata as datalyze
 import pathlib
 import fastnumbers
+import configparser
+
 sg.theme('Default1')  
 FILE_PATH_KEY = 'FILE_PATH'
 EXPECTED_VAL_KEY = 'EXPECTED_VAL'
@@ -15,6 +18,12 @@ MAX_VOL_VALUE_KEY = 'MAXIMUM_VOLUME_VALUE'
 M_VALUE_KEY = 'M_VALUE'
 B_VALUE_KEY = 'B_VALUE'
 default_folder_path = pathlib.Path().absolute()
+currentConfig = config.loadConfigurationFile()
+loadedValues = currentConfig['DEFAULT']
+mLoadedValue = loadedValues.get('m_value','0')
+bLoadedValue = loadedValues.get('b_value','0')
+minLoadedValue = loadedValues.get('min_volume','0')
+maxLoadedValue = loadedValues.get('max_volume','0')
 
 def filterArrayOfValues(values, names):
     """Retuns an array that match the keys from the values list"""
@@ -28,11 +37,13 @@ def checkIfValuesAreNumbers(values):
         if fastnumbers.isfloat(value)==0:
             return False
     return True
+
+
 layout = [
     [sg.Text('File'), sg.InputText(default_text=default_folder_path, key=FILE_PATH_KEY), sg.FolderBrowse(key=FOLDER_BROWSE_KEY)
      ],
-    [sg.Text('Min Volume (ex: 12.2)'), sg.InputText(size=(12,48), key=MIN_VOL_VALUE_KEY),sg.Text('Max Volume'), sg.InputText(size=(12,48),key=MAX_VOL_VALUE_KEY) ],
-    [sg.Text('y ='),sg.InputText(size=(6,48), key=M_VALUE_KEY),sg.Text('x +'),sg.InputText(size=(6,48), key=B_VALUE_KEY)],
+    [sg.Text('Min Volume (ex: 12.2)'), sg.InputText(default_text=minLoadedValue,size=(12,48), key=MIN_VOL_VALUE_KEY),sg.Text('Max Volume'), sg.InputText(default_text=maxLoadedValue, size=(12,48),key=MAX_VOL_VALUE_KEY) ],
+    [sg.Text('y ='),sg.InputText(default_text=mLoadedValue, size=(6,48), key=M_VALUE_KEY),sg.Text('x +'),sg.InputText(default_text=bLoadedValue, size=(6,48), key=B_VALUE_KEY)],
     [sg.Output(size=(88, 20), background_color='#000',
                text_color='#ffffff', key=OUTPUT_TEXT_KEY)],
     [sg.Submit(button_text='Validate', key=VALIDATE_BUTTON_KEY),

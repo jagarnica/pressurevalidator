@@ -5,7 +5,8 @@ import validatedata as datalyze
 import pathlib
 import fastnumbers
 import configparser
-
+import matplotlib.pyplot as plt
+import numpy as np
 sg.theme('Default1')  
 FILE_PATH_KEY = 'FILE_PATH'
 EXPECTED_VAL_KEY = 'EXPECTED_VAL'
@@ -39,6 +40,26 @@ def checkIfValuesAreNumbers(values):
     return True
 
 
+def draw_plot(plotPoints):
+   
+    font = {
+        'weight': 'normal',
+        'size': 14,
+        }
+    plt.title('Volume vs Pressure')
+    plt.xlabel('Pressure (psig)',fontdict=font)
+    plt.ylabel('Volume (mL)',fontdict=font)
+    # Data for plotting
+    plt.grid(True)
+    t = np.array(plotPoints)
+    t2 = np.linspace(0,1000,100)
+    s = 356.45 + (-0.360 * t)
+    ptsLabel = 'y='+str(-0.360)+'x+'+str(356.45)
+    plt.plot(t,s, 'bs', label=ptsLabel)
+    # plt.subplot(t2,s)
+    plt.show(block=False)
+
+
 layout = [
     [sg.Text('File'), sg.InputText(default_text=default_folder_path, key=FILE_PATH_KEY), sg.FolderBrowse(key=FOLDER_BROWSE_KEY)
      ],
@@ -61,6 +82,7 @@ while True:                             # The Event Loop
         filePath = values[FILE_PATH_KEY]
         config.saveConfiguationFile(minimumVolValue, maximumVolValue, mValue, bValue,str(filePath))
         break
+  
     if event in ('VALIDATE_BUTTON'):
 
         filePathSelected = values[FOLDER_BROWSE_KEY]
@@ -86,17 +108,22 @@ while True:                             # The Event Loop
             window[OUTPUT_TEXT_KEY].Update('')
             arr = [x for x in os.listdir(filePathSelected) if x.endswith(
                 ".txt") or x.endswith(".TXT")]
+            listOfAveragesFound = []
             for fileName in arr:
                 print(f'\nFilename: {fileName}')
                 filePath = filePathSelected+'/'+fileName
-                if datalyze.validateFile(filePath, minimumVolValue, maximumVolValue, mValue, bValue) == True:
+                averageFound = datalyze.getAverageFromFile(filePath)
+                listOfAveragesFound.append(averageFound)
+                if datalyze.validateFile(filePath, minimumVolValue, maximumVolValue, mValue, bValue) == True: 
                     successfulTotal+= 1
                 else:
                     failedTotal+= 1 
                     failedList.append(fileName)
-           
+
             print(f'\nTests Succeeded: {successfulTotal}')
             print(f'Tests Failed: {failedTotal}')
             for failedFile in failedList:
                 print(f'FAILED: {failedFile}')
+            
+            draw_plot(listOfAveragesFound)
             window.Refresh()

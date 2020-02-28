@@ -74,6 +74,43 @@ def getValueFromFunction(mVal, xVal, bVal):
     except:
         print('ERROR: There was an issue calculating the value using the formula. Check values')
         return -1
+
+def getAverageFromFile(filename):
+    """Gets the average found in the file as a number. Returns 0 if there was an issue."""
+    # filename = input('What is the file name?')
+    # This is temporary for debugging
+    # Lets see if the file exists first
+    if checkFileExists(filename) != 1:
+        return
+
+    with open(filename) as csv_file:
+        # first lets read in the file
+        # This is used to skip the first line because of the headers.
+        next(csv_file)
+        # total of all the pressure in the data.
+        pressureDataList = []
+        pressureHeaderName = "Pressure(psig)"
+        timeHeaderName = "Time(ms)"
+        # Read in the file with the columns and row accessible
+        try:
+            csv_reader = csv.DictReader(csv_file, delimiter='\t')
+            line_count = 0
+
+            for row in csv_reader:
+                if line_count == 1:
+                    # print(f'Column names are {row}')
+                    line_count += 1
+                else:
+                    # print(f'\t{row[0]}')
+                    currentTime = float(row[timeHeaderName])
+                    if currentTime >= 2000 and currentTime <= 8000:
+                        pressureDataList.append(float(row[pressureHeaderName]))
+                        # print(f'\t Time: {row["Time(ms)"]} Pressure: {row["Pressure(psig)"]}')
+                    line_count += 1
+            return round(getAvg(pressureDataList),2)
+        except:
+            traceback.print_exc()
+            return 0
 def validateFile(filename, minValue, maxValue, mValue, bValue):
     """This reads the file from the folder. Checks to see if it is between the min and max value after calculating the average and plugging into the linear function."""
     # filename = input('What is the file name?')

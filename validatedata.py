@@ -24,9 +24,9 @@ def getAvg(numList):
         print('ERROR: There was an issue getting the average')
         return 0
 
-def convertToNumber(stringNum):
+def convertToNumber(stringNum, defaultValue=0):
     """Converts a string to a real number for python. The default value is 0."""
-    return fastnumbers.fast_real(stringNum, default=0, coerce=False, on_fail=handleFailedNumConversion)
+    return fastnumbers.fast_real(stringNum, default=defaultValue, coerce=False, on_fail=handleFailedNumConversion)
 
 def checkIfInRange(num, expected, tolerance):
     # This is the minimum value, for example a tolerance of 0.1 would be expected * 0.9

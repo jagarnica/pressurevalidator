@@ -11,7 +11,6 @@ def checkFileExists(fn):
         open(fn, "r")
         return 1
     except IOError:
-        print("Error: File does not appear to exist.")
         return 0
 # This returns the avg for a total number and the number of items
 def loadConfigurationFile():
@@ -25,7 +24,11 @@ def loadConfigurationFile():
 
 def saveConfiguationFile(minVal, maxVal, mVal, bVal, filePath):
     """Saves the current configuration as config file."""
-    configCreated = configparser.ConfigParser()
-    configCreated['Default'] = {'Min_Volume': minVal, 'Max_Volume':maxVal,'M_Value':mVal,'B_Value':bVal,'Test_Folder_Path':filePath}
-    with open(CONFIG_FILE_NAME, 'w') as configfile:
+    try:
+        configCreated = configparser.ConfigParser()
+        configCreated['Default'] = {'Min_Volume': minVal, 'Max_Volume':maxVal,'M_Value':mVal,'B_Value':bVal,'Test_Folder_Path':filePath}
+        with open(CONFIG_FILE_NAME, 'w') as configfile:
             configCreated.write(configfile)
+    except:
+        print('ERROR: There was an issue saving the config.')
+    

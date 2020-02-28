@@ -16,6 +16,7 @@ def checkFileExists(fn):
 def loadConfigurationFile():
     if checkFileExists(CONFIG_FILE_NAME)==False: 
         with open(CONFIG_FILE_NAME, 'w') as configfile:
+            print('Creating new config file. ')
             config.write(configfile)
 
     createdConfig = configparser.ConfigParser()

@@ -1,6 +1,7 @@
 import io
 import csv
 import traceback
+import fastnumbers
 
 
 def checkFileExists(fn):
@@ -11,7 +12,8 @@ def checkFileExists(fn):
         print("Error: File does not appear to exist.")
         return 0
 # This returns the avg for a total number and the number of items
-
+def handleFailedNumConversion(x):
+    print(f'ERROR: Please check your inputs are valid number values: {x}')
 
 def getAvg(numList):
     try:
@@ -22,6 +24,9 @@ def getAvg(numList):
         print('ERROR: There was an issue getting the average')
         return 0
 
+def convertToNumber(stringNum):
+    """Converts a string to a real number for python. The default value is 0."""
+    return fastnumbers.fast_real(stringNum, default=0, coerce=False, on_fail=handleFailedNumConversion)
 
 def checkIfInRange(num, expected, tolerance):
     # This is the minimum value, for example a tolerance of 0.1 would be expected * 0.9
@@ -48,6 +53,7 @@ def getValueFromFunction(mVal, xVal, bVal):
         print('ERROR: There was an issue calculating the value using the formula. Check values')
         return -1
 def validateFile(filename, minValue, maxValue, mValue, bValue):
+    """This reads the file from the folder. Checks to see if it is between the min and max value after calculating the average and plugging into the linear function."""
     # filename = input('What is the file name?')
     # This is temporary for debugging
     # Lets see if the file exists first

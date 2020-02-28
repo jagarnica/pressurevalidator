@@ -15,11 +15,19 @@ MAX_VOL_VALUE_KEY = 'MAXIMUM_VOLUME_VALUE'
 M_VALUE_KEY = 'M_VALUE'
 B_VALUE_KEY = 'B_VALUE'
 default_folder_path = pathlib.Path().absolute()
-def checkIfValuesAreNumbers(valuesToCheck):
-    for value in valuesToCheck:
+
+def filterArrayOfValues(values, names):
+    """Retuns an array that match the keys from the values list"""
+    filteredArray = []
+    for name in names:
+        filteredArray.append(values[name])
+    return filteredArray
+
+def checkIfValuesAreNumbers(values):
+    for value in values:
         if fastnumbers.isfloat(value)==0:
-            return 0
-    return 1
+            return False
+    return True
 layout = [
     [sg.Text('File'), sg.InputText(default_text=default_folder_path, key=FILE_PATH_KEY), sg.FolderBrowse(key=FOLDER_BROWSE_KEY)
      ],
@@ -41,29 +49,35 @@ while True:                             # The Event Loop
         filePathSelected = values[FOLDER_BROWSE_KEY]
         if filePathSelected == '':
             filePathSelected = str(default_folder_path)
-        
-        minimumVolValue = fastnumbers.fast_float(values[MIN_VOL_VALUE_KEY])
-        maximumVolValue = fastnumbers.fast_float(values[MAX_VOL_VALUE_KEY])
-        mValue = fastnumbers.fast_float(values[M_VALUE_KEY])
-        bValue = fastnumbers.fast_float(values[B_VALUE_KEY])
-        
-        print('Current Path: '+filePathSelected)
-        # Get a list of txt files in the folder selected
-        successfulTotal = 0 
-        failedTotal = 0 
-        failedList = []
-        window[OUTPUT_TEXT_KEY].Update('')
-        arr = [x for x in os.listdir(filePathSelected) if x.endswith(
-            ".txt") or x.endswith(".TXT")]
-        for fileName in arr:
-            print(f'\nFilename: {fileName}')
-            if datalyze.validateFile(fileName, minimumVolValue, maximumVolValue, mValue, bValue) == 1:
-                successfulTotal+= 1
-            else:
-                failedTotal+= 1 
-                failedList.append(fileName)
-        print(f'\nTests Succeeded: {successfulTotal}')
-        print(f'Tests Failed: {failedTotal}')
-        for failedFile in failedList:
-            print(f'FAILED: {failedFile}')
-        window.Refresh()
+        # Here are the string values that we are going to check 
+        listOfValuesToCheck = [MIN_VOL_VALUE_KEY, MAX_VOL_VALUE_KEY, M_VALUE_KEY, B_VALUE_KEY]
+        arrayOfInputValues = filterArrayOfValues(values, listOfValuesToCheck)
+        if checkIfValuesAreNumbers(arrayOfInputValues)==False:
+            print('Error: Please check your input values')
+        else:
+            minimumVolValue = datalyze.convertToNumber(values[MIN_VOL_VALUE_KEY])
+            maximumVolValue = datalyze.convertToNumber(values[MAX_VOL_VALUE_KEY])
+            mValue = datalyze.convertToNumber(values[M_VALUE_KEY])
+            bValue = datalyze.convertToNumber(values[B_VALUE_KEY])
+
+            
+            print('Current Path: '+filePathSelected)
+            # Get a list of txt files in the folder selected
+            successfulTotal = 0 
+            failedTotal = 0 
+            failedList = []
+            window[OUTPUT_TEXT_KEY].Update('')
+            arr = [x for x in os.listdir(filePathSelected) if x.endswith(
+                ".txt") or x.endswith(".TXT")]
+            for fileName in arr:
+                print(f'\nFilename: {fileName}')
+                if datalyze.validateFile(fileName, minimumVolValue, maximumVolValue, mValue, bValue) == 1:
+                    successfulTotal+= 1
+                else:
+                    failedTotal+= 1 
+                    failedList.append(fileName)
+            print(f'\nTests Succeeded: {successfulTotal}')
+            print(f'Tests Failed: {failedTotal}')
+            for failedFile in failedList:
+                print(f'FAILED: {failedFile}')
+            window.Refresh()

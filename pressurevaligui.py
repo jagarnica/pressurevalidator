@@ -89,11 +89,12 @@ while True:                             # The Event Loop
             for fileName in arr:
                 print(f'\nFilename: {fileName}')
                 filePath = filePathSelected+'/'+fileName
-                if datalyze.validateFile(filePath, minimumVolValue, maximumVolValue, mValue, bValue) == 1:
+                if datalyze.validateFile(filePath, minimumVolValue, maximumVolValue, mValue, bValue) == True:
                     successfulTotal+= 1
                 else:
                     failedTotal+= 1 
                     failedList.append(fileName)
+           
             print(f'\nTests Succeeded: {successfulTotal}')
             print(f'Tests Failed: {failedTotal}')
             for failedFile in failedList:

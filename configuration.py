@@ -1,9 +1,10 @@
-import json
 import configparser
+import pathlib
 config = configparser.ConfigParser()
 CONFIG_FILE_NAME = 'config.ini'
+defaultFilePath = pathlib.Path().absolute()
 # These are our default values just in case the file does not exist. 
-config['DEFAULT'] = {'Min_Volume': '300','Max_Volume': '400','M_Value': '-0.36','B_Value':'300'}
+config['DEFAULT'] = {'Min_Volume': '300','Max_Volume': '400','M_Value': '-0.36','B_Value':'300','Test_Folder_Path':defaultFilePath}
 # this file is in charge of loading the configuration file. 
 def checkFileExists(fn):
     try:
@@ -21,4 +22,10 @@ def loadConfigurationFile():
     createdConfig = configparser.ConfigParser()
     createdConfig.read(CONFIG_FILE_NAME)
     return createdConfig 
-print(f'Configuration: {loadConfigurationFile()}')
+
+def saveConfiguationFile(minVal, maxVal, mVal, bVal, filePath):
+    """Saves the current configuration as config file."""
+    configCreated = configparser.ConfigParser()
+    configCreated['Default'] = {'Min_Volume': minVal, 'Max_Volume':maxVal,'M_Value':mVal,'B_Value':bVal,'Test_Folder_Path':filePath}
+    with open(CONFIG_FILE_NAME, 'w') as configfile:
+            configCreated.write(configfile)

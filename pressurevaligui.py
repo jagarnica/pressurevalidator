@@ -54,6 +54,12 @@ while True:                             # The Event Loop
     event, values = window.read()
     # print(event, values) #debug
     if event in (None, 'Exit', 'Cancel'):
+        minimumVolValue = datalyze.convertToNumber(values[MIN_VOL_VALUE_KEY])
+        maximumVolValue = datalyze.convertToNumber(values[MAX_VOL_VALUE_KEY])
+        mValue = datalyze.convertToNumber(values[M_VALUE_KEY])
+        bValue = datalyze.convertToNumber(values[B_VALUE_KEY])
+        filePath = values[FILE_PATH_KEY]
+        config.saveConfiguationFile(minimumVolValue, maximumVolValue, mValue, bValue,str(filePath))
         break
     if event in ('VALIDATE_BUTTON'):
 

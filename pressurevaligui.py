@@ -40,23 +40,27 @@ def checkIfValuesAreNumbers(values):
     return True
 
 
-def draw_plot(plotPoints):
-   
-    font = {
-        'weight': 'normal',
-        'size': 14,
-        }
+def draw_plot(plotPoints, mValue, bValue, minVolume, maxVolume):
+    plt.clf()
+    font = {'weight': 'normal','size': 14}
     plt.title('Volume vs Pressure')
-    plt.xlabel('Pressure (psig)',fontdict=font)
-    plt.ylabel('Volume (mL)',fontdict=font)
+    plt.xlabel('Pressure [psig]',fontdict=font)
+    plt.ylabel('Volume [mL]',fontdict=font)
     # Data for plotting
     plt.grid(True)
     t = np.array(plotPoints)
-    t2 = np.linspace(0,1000,100)
-    s = 356.45 + (-0.360 * t)
-    ptsLabel = 'y='+str(-0.360)+'x+'+str(356.45)
+   
+    s = bValue + (mValue * t)
+    s2 = np.arange(minVolume,maxVolume,0.01)
+    xValues = []
+    for value in s2:
+        xFound = round(((value-bValue)/mValue),4)
+        xValues.append(xFound)
+    ptsLabel = 'y='+str(mValue)+'x+'+str(bValue)
+    plt.plot(xValues, s2, linestyle='solid')
     plt.plot(t,s, 'bs', label=ptsLabel)
-    # plt.subplot(t2,s)
+    
+    plt.legend(loc='upper right')
     plt.show(block=False)
 
 
@@ -125,5 +129,5 @@ while True:                             # The Event Loop
             for failedFile in failedList:
                 print(f'FAILED: {failedFile}')
             
-            draw_plot(listOfAveragesFound)
+            draw_plot(listOfAveragesFound, mValue,bValue, minimumVolValue, maximumVolValue)
             window.Refresh()
